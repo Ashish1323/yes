@@ -117,6 +117,26 @@
     font-family:'Fraunces',serif;font-style:italic;
   }
 
+  /* ---- day & time chips ---- */
+  .chip-group{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:14px 0 26px;}
+  .chip-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;}
+  .chip{
+    font-family:'Karla',sans-serif;font-weight:700;font-size:.92rem;
+    padding:10px 18px;border-radius:999px;cursor:pointer;
+    border:3px solid var(--espresso);background:var(--foam);color:var(--espresso);
+    transition:transform .12s ease, background .12s ease, color .12s ease;
+  }
+  .chip small{display:block;font-weight:400;font-size:.68rem;color:var(--ink-soft);font-family:'Fraunces',serif;font-style:italic;margin-top:2px;}
+  .chip:hover{transform:translateY(-2px);}
+  .chip.selected{background:var(--espresso);color:var(--foam);}
+  .chip.selected small{color:var(--crema);}
+  .lock{
+    background:var(--caramel);color:var(--foam);
+    box-shadow:0 6px 0 rgba(53,35,24,.25);
+  }
+  .lock:disabled{opacity:.4;cursor:not-allowed;box-shadow:none;}
+  .lock:not(:disabled):hover{transform:scale(1.05);}
+
   /* ---- final page ---- */
   .ticket{
     background:var(--foam);border:3px solid var(--espresso);border-radius:20px;
@@ -203,6 +223,25 @@
   </div>
 </section>
 
+<!-- PAGE 2.5 — when works? -->
+<section class="page" id="pageWhen">
+  <div class="eyebrow">now brewing · final details</div>
+  <h1>When are you <em>free?</em></h1>
+  <p class="sub">Pick a day this week, and your hour of choice.</p>
+
+  <span class="chip-label">Day</span>
+  <div class="chip-group" id="dayChips"></div>
+
+  <span class="chip-label">Time</span>
+  <div class="chip-group" id="timeChips">
+    <button class="chip" data-time="Afternoon">☀️ Afternoon<small>daylight. very respectable.</small></button>
+    <button class="chip" data-time="Evening">🌆 Evening<small>golden hour, golden choice</small></button>
+    <button class="chip" data-time="Night">🌙 Night<small>bold. respect.</small></button>
+  </div>
+
+  <button class="lock" id="lockBtn" disabled>Lock it in 🔒</button>
+</section>
+
 <!-- PAGE 3 — it's a date -->
 <section class="page" id="page3">
   <div class="eyebrow">order confirmed</div>
@@ -210,6 +249,7 @@
   <div class="ticket">
     <span class="label">Your pick</span>
     <div class="pick" id="finalPick">☕ Coffee</div>
+    <div class="when" id="finalWhen" style="font-family:'Karla',sans-serif;font-weight:700;font-size:1rem;margin-bottom:6px;"></div>
     <span class="fine">redeemable for one good evening · non-refundable</span>
   </div>
   <p class="sub">One last step — make it official:</p>
@@ -254,7 +294,8 @@
     noBtn.style.position = 'fixed';
     const pad = 14;
     const bw = noBtn.offsetWidth, bh = noBtn.offsetHeight;
-    const W = window.innerWidth, H = window.innerHeight;
+    const W = (window.visualViewport ? window.visualViewport.width : window.innerWidth);
+    const H = (window.visualViewport ? window.visualViewport.height : window.innerHeight);
     // stick to the empty edges — never land on the main content
     const c = document.querySelector('.page.active').getBoundingClientRect();
     const zones = [];
@@ -265,8 +306,16 @@
     // fallback if content fills the screen: hug top or bottom edge
     if (!zones.length) zones.push({x0:pad, x1:W-bw-pad, y0:pad, y1:pad}, {x0:pad, x1:W-bw-pad, y0:H-bh-pad, y1:H-bh-pad});
     const z = zones[Math.floor(Math.random()*zones.length)];
-    noBtn.style.left = (z.x0 + Math.random()*Math.max(z.x1-z.x0, 0)) + 'px';
-    noBtn.style.top  = (z.y0 + Math.random()*Math.max(z.y1-z.y0, 0)) + 'px';
+    let x = z.x0 + Math.random()*Math.max(z.x1-z.x0, 0);
+    let y = z.y0 + Math.random()*Math.max(z.y1-z.y0, 0);
+    // hard safety net: if the spot still overlaps the content, snap to the bigger free gap
+    if (x < c.right && x+bw > c.left && y < c.bottom && y+bh > c.top){
+      y = (c.top > H - c.bottom)
+        ? Math.max(pad, c.top - bh - pad)      // gap above is bigger
+        : Math.min(H - bh - pad, c.bottom + pad); // gap below is bigger
+    }
+    noBtn.style.left = x + 'px';
+    noBtn.style.top  = y + 'px';
     noBtn.style.transform = 'scale('+scale+')';
     if (dodges >= noTexts.length-1){
       // give up gracefully — No becomes a second Yes
@@ -301,8 +350,9 @@
   }
 
   /* ---- page flow ---- */
+  const pageWhen = document.getElementById('pageWhen');
   function show(p){
-    [page1,page2,page3].forEach(x=>x.classList.remove('active'));
+    [page1,page2,pageWhen,page3].forEach(x=>x.classList.remove('active'));
     p.classList.add('active');
   }
 
@@ -313,19 +363,61 @@
   }
   yesBtn.addEventListener('click', accept);
 
-  /* ---- choice cards ---- */
+  /* ---- choice cards → scheduling ---- */
   const emoji = {Coffee:'☕', Drinks:'🍸', Sushi:'🍣', Ramen:'🍜'};
+  let chosen = {pick:null, day:null, time:null};
+
   document.querySelectorAll('.card').forEach(card=>{
     function choose(){
-      const pick = card.dataset.pick;
-      document.getElementById('finalPick').textContent = emoji[pick]+' '+pick;
-      const msg = encodeURIComponent("Hey Ashish, I said yes 😌 let's do "+pick.toLowerCase()+" "+emoji[pick]);
-      document.getElementById('waLink').href = "https://wa.me/"+PHONE+"?text="+msg;
-      confetti();
-      show(page3);
+      chosen.pick = card.dataset.pick;
+      show(pageWhen);
     }
     card.addEventListener('click', choose);
     card.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();choose();} });
+  });
+
+  /* ---- build day chips: next 6 days ---- */
+  const dayChips = document.getElementById('dayChips');
+  const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const monNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  for(let i=1;i<=6;i++){
+    const d = new Date();
+    d.setDate(d.getDate()+i);
+    const label = (i===1 ? 'Tomorrow' : dayNames[d.getDay()]);
+    const btn = document.createElement('button');
+    btn.className='chip';
+    btn.dataset.day = dayNames[d.getDay()] + ', ' + monNames[d.getMonth()] + ' ' + d.getDate();
+    btn.innerHTML = label + '<small>' + monNames[d.getMonth()] + ' ' + d.getDate() + '</small>';
+    dayChips.appendChild(btn);
+  }
+
+  /* ---- chip selection ---- */
+  const lockBtn = document.getElementById('lockBtn');
+  function wireChips(container, key){
+    container.addEventListener('click', e=>{
+      const chip = e.target.closest('.chip');
+      if(!chip) return;
+      container.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
+      chip.classList.add('selected');
+      chosen[key] = chip.dataset[key];
+      lockBtn.disabled = !(chosen.day && chosen.time);
+    });
+  }
+  wireChips(dayChips, 'day');
+  wireChips(document.getElementById('timeChips'), 'time');
+
+  /* ---- lock it in ---- */
+  const timeEmoji = {Afternoon:'☀️', Evening:'🌆', Night:'🌙'};
+  lockBtn.addEventListener('click', ()=>{
+    document.getElementById('finalPick').textContent = emoji[chosen.pick]+' '+chosen.pick;
+    document.getElementById('finalWhen').textContent = chosen.day+' · '+chosen.time+' '+timeEmoji[chosen.time];
+    const msg = encodeURIComponent(
+      "Hey Ashish, I said yes 😌 let's do "+chosen.pick.toLowerCase()+" "+emoji[chosen.pick]+
+      " — "+chosen.day+", "+chosen.time.toLowerCase()+" "+timeEmoji[chosen.time]
+    );
+    document.getElementById('waLink').href = "https://wa.me/"+PHONE+"?text="+msg;
+    confetti();
+    show(page3);
   });
 })();
 </script>
