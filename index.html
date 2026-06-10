@@ -27,7 +27,7 @@
 
   html,
   body{
-    height:100%;
+    min-height:100%;
   }
 
   body{
@@ -194,7 +194,7 @@
     border-radius:999px;
     cursor:pointer;
     border:3px solid var(--espresso);
-    transition:transform .15s ease, box-shadow .15s ease;
+    transition:transform .15s ease, box-shadow .15s ease, left .2s ease, top .2s ease;
     -webkit-tap-highlight-color:transparent;
     touch-action:manipulation;
   }
@@ -224,12 +224,35 @@
     white-space:nowrap;
   }
 
+  /*
+    Important fix:
+    No more position: fixed.
+    Fixed positioning was the reason Safari made the No button disappear.
+  */
+  .no-zone{
+    position:relative;
+    width:min(100%, 430px);
+    height:112px;
+    margin:18px auto 0;
+    pointer-events:none;
+  }
+
+  .no-zone.active{
+    pointer-events:auto;
+  }
+
   .no.runaway{
-    position:fixed;
-    z-index:1000;
+    position:absolute;
+    z-index:20;
     background:var(--foam);
     box-shadow:0 6px 0 rgba(53,35,24,.18);
-    transform-origin:top left;
+    transform-origin:center;
+  }
+
+  .no.surrender{
+    background:var(--espresso);
+    color:var(--foam);
+    box-shadow:0 6px 0 rgba(53,35,24,.25);
   }
 
   /* ---- choice cards ---- */
@@ -458,6 +481,10 @@
       padding:13px 28px;
       font-size:1rem;
     }
+
+    .no-zone{
+      height:96px;
+    }
   }
 </style>
 </head>
@@ -483,10 +510,13 @@
     Tasting notes: good banter, questionable confidence, knows too much about coffee.
   </p>
 
-  <div class="btn-row">
+  <div class="btn-row" id="btnRow">
     <button class="yes" id="yesBtn">Yes ☕</button>
     <button class="no" id="noBtn">No</button>
   </div>
+
+  <!-- Safe zone for the No button after first dodge -->
+  <div class="no-zone" id="noZone"></div>
 </section>
 
 <!-- PAGE 2 — pick the vibe -->
@@ -591,6 +621,7 @@
 
   const yesBtn = document.getElementById('yesBtn');
   const noBtn = document.getElementById('noBtn');
+  const noZone = document.getElementById('noZone');
 
   /* ---- runaway No button ---- */
 
@@ -613,118 +644,71 @@
 
   let dodges = 0;
   let noSurrendered = false;
-  let lastDodgeAt = 0;
-
-  function getViewport(){
-    const vv = window.visualViewport;
-
-    return {
-      left: vv ? vv.offsetLeft : 0,
-      top: vv ? vv.offsetTop : 0,
-      width: vv ? vv.width : window.innerWidth,
-      height: vv ? vv.height : window.innerHeight
-    };
-  }
+  let lastNoActionAt = 0;
 
   function rand(min, max){
     return min + Math.random() * Math.max(max - min, 0);
   }
 
-  function dodge(){
-    if (noSurrendered) return;
+  function moveNoIntoSafeZone(){
+    if (noBtn.parentElement !== noZone) {
+      noZone.appendChild(noBtn);
+      noZone.classList.add('active');
 
-    lastDodgeAt = Date.now();
-    dodges++;
+      noBtn.classList.add('runaway');
+      noBtn.style.left = '50%';
+      noBtn.style.top = '20px';
+      noBtn.style.transform = 'translateX(-50%) scale(1)';
+    }
+  }
 
-    noBtn.textContent = noTexts[Math.min(dodges, noTexts.length - 1)];
-    noBtn.classList.add('runaway');
+  function placeNoRandomly(){
+    moveNoIntoSafeZone();
 
-    const scale = Math.max(0.68, 1 - dodges * 0.025);
-
+    // Temporarily reset transform so width/height measurements are not cursed.
     noBtn.style.transform = 'none';
-    noBtn.style.left = '0px';
-    noBtn.style.top = '0px';
 
-    const vp = getViewport();
-    const pad = 16;
+    const zoneW = noZone.clientWidth;
+    const zoneH = noZone.clientHeight;
 
-    const bw = noBtn.offsetWidth * scale;
-    const bh = noBtn.offsetHeight * scale;
+    const scale = Math.max(0.72, 1 - dodges * 0.025);
 
-    const pageRect = page1.getBoundingClientRect();
+    const btnW = noBtn.offsetWidth * scale;
+    const btnH = noBtn.offsetHeight * scale;
 
-    const protectedRect = {
-      left: Math.max(vp.left, pageRect.left - 24),
-      right: Math.min(vp.left + vp.width, pageRect.right + 24),
-      top: Math.max(vp.top, pageRect.top - 36),
-      bottom: Math.min(vp.top + vp.height, pageRect.bottom + 36)
-    };
+    const maxX = Math.max(0, zoneW - btnW);
+    const maxY = Math.max(0, zoneH - btnH);
 
-    const zones = [];
-
-    /*
-      Prefer putting the playful text below the main content.
-      This avoids the ugly issue where "You sure?" floats over the headline/cup.
-    */
-    const belowTop = protectedRect.bottom + pad;
-    const belowBottom = vp.top + vp.height - bh - pad;
-
-    if (belowBottom > belowTop) {
-      zones.push({
-        x0: vp.left + pad,
-        x1: vp.left + vp.width - bw - pad,
-        y0: belowTop,
-        y1: belowBottom
-      });
-    }
-
-    /*
-      Fallback: put it above the content only if there is enough clean space.
-    */
-    const aboveTop = vp.top + pad;
-    const aboveBottom = protectedRect.top - bh - pad;
-
-    if (aboveBottom > aboveTop) {
-      zones.push({
-        x0: vp.left + pad,
-        x1: vp.left + vp.width - bw - pad,
-        y0: aboveTop,
-        y1: aboveBottom
-      });
-    }
-
-    /*
-      Last fallback: keep it visible near the bottom.
-      Not glamorous, but neither is debugging iPhone viewport behavior.
-    */
-    if (!zones.length) {
-      zones.push({
-        x0: vp.left + pad,
-        x1: vp.left + vp.width - bw - pad,
-        y0: vp.top + vp.height - bh - pad,
-        y1: vp.top + vp.height - bh - pad
-      });
-    }
-
-    const z = zones[0];
-
-    const x = rand(z.x0, z.x1);
-    const y = rand(z.y0, z.y1);
+    const x = rand(0, maxX);
+    const y = rand(0, maxY);
 
     noBtn.style.left = x + 'px';
     noBtn.style.top = y + 'px';
     noBtn.style.transform = 'scale(' + scale + ')';
+  }
+
+  function dodge(){
+    if (noSurrendered) {
+      return;
+    }
+
+    dodges++;
+    lastNoActionAt = Date.now();
+
+    noBtn.textContent = noTexts[Math.min(dodges, noTexts.length - 1)];
+
+    placeNoRandomly();
 
     if (dodges >= noTexts.length - 1) {
       noSurrendered = true;
-      noBtn.classList.remove('no');
-      noBtn.classList.add('yes');
+      noBtn.classList.add('surrender');
       noBtn.textContent = "Fine. Yes it is ☕";
     }
   }
 
   function handleNoAttempt(e){
     e.preventDefault();
+    e.stopPropagation();
 
     if (noSurrendered) {
       accept();
@@ -734,22 +718,23 @@
     dodge();
   }
 
+  // Desktop: run away on hover.
   noBtn.addEventListener('pointerenter', function(e){
     if (e.pointerType !== 'touch' && !noSurrendered) {
       dodge();
     }
   });
 
+  // Mobile and desktop press.
   noBtn.addEventListener('pointerdown', handleNoAttempt, { passive:false });
 
+  // Backup for browsers that skip pointer events or fire click separately.
   noBtn.addEventListener('click', function(e){
     e.preventDefault();
+    e.stopPropagation();
 
-    /*
-      Prevent mobile browsers from firing pointerdown and click together,
-      which was causing the button to hide before the playful text could be seen.
-    */
-    if (Date.now() - lastDodgeAt < 350) {
+    // Prevent double-trigger from pointerdown + click.
+    if (Date.now() - lastNoActionAt < 350) {
       return;
     }
 
