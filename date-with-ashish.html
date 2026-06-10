@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>a small question ☕</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F0E4;
+    --espresso:#352318;
+    --crema:#C89B6D;
+    --caramel:#A85B2A;
+    --foam:#FFFDF8;
+    --ink-soft:#6B5645;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    font-family:'Karla',sans-serif;
+    background:var(--paper);
+    color:var(--espresso);
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+    background-image:radial-gradient(circle at 20% 15%, rgba(200,155,109,.12), transparent 45%),
+                     radial-gradient(circle at 85% 80%, rgba(168,91,42,.08), transparent 40%);
+  }
+  .page{
+    display:none;
+    text-align:center;
+    padding:28px 22px;
+    max-width:560px;
+    width:100%;
+    animation:fadeUp .6s ease both;
+  }
+  .page.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+
+  .eyebrow{
+    font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--caramel);font-weight:700;margin-bottom:18px;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:clamp(2rem, 7vw, 3.1rem);
+    line-height:1.12;
+    margin-bottom:14px;
+  }
+  h1 em{font-style:italic;font-weight:500;color:var(--caramel);}
+  .sub{color:var(--ink-soft);font-size:1rem;margin-bottom:34px;line-height:1.5;}
+
+  /* ---- coffee cup ---- */
+  .cup{margin:0 auto 26px;width:74px;position:relative;}
+  .cup .mug{
+    width:64px;height:46px;background:var(--foam);
+    border:3px solid var(--espresso);border-radius:0 0 18px 18px;
+    position:relative;margin:0 auto;
+  }
+  .cup .mug::after{
+    content:'';position:absolute;right:-16px;top:6px;
+    width:16px;height:20px;border:3px solid var(--espresso);
+    border-left:none;border-radius:0 10px 10px 0;
+  }
+  .cup .mug::before{
+    content:'';position:absolute;left:5px;right:5px;top:5px;height:8px;
+    background:var(--crema);border-radius:6px;
+  }
+  .steam{position:absolute;top:-22px;left:50%;transform:translateX(-50%);display:flex;gap:8px;}
+  .steam span{
+    width:3px;height:16px;background:var(--crema);border-radius:3px;opacity:.7;
+    animation:steam 2.2s ease-in-out infinite;
+  }
+  .steam span:nth-child(2){animation-delay:.4s;height:20px;}
+  .steam span:nth-child(3){animation-delay:.8s;}
+  @keyframes steam{
+    0%,100%{transform:translateY(0) scaleY(1);opacity:.7;}
+    50%{transform:translateY(-6px) scaleY(1.15);opacity:.25;}
+  }
+
+  /* ---- buttons ---- */
+  .btn-row{display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap;}
+  button{
+    font-family:'Karla',sans-serif;font-weight:700;font-size:1.05rem;
+    padding:15px 38px;border-radius:999px;cursor:pointer;
+    border:3px solid var(--espresso);
+    transition:transform .15s ease, box-shadow .15s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  button:focus-visible{outline:3px dashed var(--caramel);outline-offset:3px;}
+  .yes{
+    background:var(--espresso);color:var(--foam);
+    box-shadow:0 6px 0 rgba(53,35,24,.25);
+  }
+  .yes:hover{transform:scale(1.07) rotate(-1deg);}
+  .yes:active{transform:scale(.97);}
+  .no{
+    background:transparent;color:var(--espresso);
+  }
+
+  /* ---- choice cards ---- */
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px;}
+  .card{
+    background:var(--foam);border:3px solid var(--espresso);border-radius:18px;
+    padding:22px 12px 18px;cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+    font-family:'Karla',sans-serif;
+  }
+  .card:hover{transform:translateY(-4px) rotate(-.5deg);box-shadow:0 8px 0 rgba(53,35,24,.18);}
+  .card:active{transform:scale(.97);}
+  .card .ico{font-size:2.1rem;display:block;margin-bottom:8px;}
+  .card .name{font-weight:700;font-size:1.05rem;display:block;}
+  .card .note{
+    display:block;margin-top:5px;font-size:.78rem;color:var(--ink-soft);
+    font-family:'Fraunces',serif;font-style:italic;
+  }
+
+  /* ---- final page ---- */
+  .ticket{
+    background:var(--foam);border:3px solid var(--espresso);border-radius:20px;
+    padding:30px 24px;margin:0 auto 26px;max-width:380px;position:relative;
+  }
+  .ticket::before,.ticket::after{
+    content:'';position:absolute;width:22px;height:22px;background:var(--paper);
+    border:3px solid var(--espresso);border-radius:50%;top:50%;transform:translateY(-50%);
+  }
+  .ticket::before{left:-14px;border-left-color:transparent;}
+  .ticket::after{right:-14px;border-right-color:transparent;}
+  .ticket .label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;}
+  .ticket .pick{font-family:'Fraunces',serif;font-size:1.9rem;font-weight:600;margin:8px 0 4px;}
+  .ticket .fine{font-size:.8rem;color:var(--ink-soft);font-style:italic;}
+  .wa{
+    display:inline-flex;align-items:center;gap:10px;text-decoration:none;
+    background:var(--caramel);color:var(--foam);font-weight:700;font-size:1.05rem;
+    padding:15px 32px;border-radius:999px;border:3px solid var(--espresso);
+    box-shadow:0 6px 0 rgba(53,35,24,.25);
+    transition:transform .15s ease;
+  }
+  .wa:hover{transform:scale(1.05);}
+
+  /* confetti */
+  .confetti{
+    position:fixed;width:9px;height:14px;top:-20px;pointer-events:none;z-index:99;
+    animation:fall linear forwards;
+  }
+  @keyframes fall{
+    to{transform:translateY(110vh) rotate(720deg);opacity:.9;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important;transition:none !important;}
+  }
+  @media (max-width:380px){
+    button{padding:13px 28px;font-size:1rem;}
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 — the question -->
+<section class="page active" id="page1">
+  <div class="cup">
+    <div class="steam"><span></span><span></span><span></span></div>
+    <div class="mug"></div>
+  </div>
+  <div class="eyebrow">single origin · limited edition · one (1) ashish</div>
+  <h1>Will you go on a <em>date</em> with Ashish?</h1>
+  <p class="sub">Tasting notes: good banter, questionable confidence, knows too much about coffee.</p>
+  <div class="btn-row">
+    <button class="yes" id="yesBtn">Yes ☕</button>
+    <button class="no" id="noBtn">No</button>
+  </div>
+</section>
+
+<!-- PAGE 2 — pick the vibe -->
+<section class="page" id="page2">
+  <div class="eyebrow">excellent decision · now curating</div>
+  <h1>Pick the <em>vibe</em></h1>
+  <p class="sub">No wrong answers. Some answers are more right.</p>
+  <div class="cards">
+    <div class="card" data-pick="Coffee" tabindex="0" role="button">
+      <span class="ico">☕</span>
+      <span class="name">Coffee</span>
+      <span class="note">he will talk about V60s. be warned.</span>
+    </div>
+    <div class="card" data-pick="Drinks" tabindex="0" role="button">
+      <span class="ico">🍸</span>
+      <span class="name">Drinks</span>
+      <span class="note">liquid courage, optional</span>
+    </div>
+    <div class="card" data-pick="Sushi" tabindex="0" role="button">
+      <span class="ico">🍣</span>
+      <span class="name">Sushi</span>
+      <span class="note">raw honesty included</span>
+    </div>
+    <div class="card" data-pick="Ramen" tabindex="0" role="button">
+      <span class="ico">🍜</span>
+      <span class="name">Ramen</span>
+      <span class="note">slurping is flirting</span>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 3 — it's a date -->
+<section class="page" id="page3">
+  <div class="eyebrow">order confirmed</div>
+  <h1>It's a <em>date.</em></h1>
+  <div class="ticket">
+    <span class="label">Your pick</span>
+    <div class="pick" id="finalPick">☕ Coffee</div>
+    <span class="fine">redeemable for one good evening · non-refundable</span>
+  </div>
+  <p class="sub">One last step — make it official:</p>
+  <a class="wa" id="waLink" href="#" target="_blank" rel="noopener">Tell Ashish 💬</a>
+</section>
+
+<script>
+(function(){
+  const PHONE = "919427036284";
+  const page1 = document.getElementById('page1');
+  const page2 = document.getElementById('page2');
+  const page3 = document.getElementById('page3');
+  const yesBtn = document.getElementById('yesBtn');
+  const noBtn  = document.getElementById('noBtn');
+
+  /* ---- runaway No button ---- */
+  const noTexts = ["No","You sure?","Think again","Seriously?","The barista is judging you","Okay now you're just playing","...","Yes it is then"];
+  let dodges = 0;
+
+  function dodge(){
+    dodges++;
+    // escalate the label
+    noBtn.textContent = noTexts[Math.min(dodges, noTexts.length-1)];
+    // shrink a little each time
+    const scale = Math.max(0.55, 1 - dodges*0.07);
+    // break it out of the layout on first dodge
+    noBtn.style.position = 'fixed';
+    const pad = 30;
+    const bw = noBtn.offsetWidth, bh = noBtn.offsetHeight;
+    const maxX = window.innerWidth  - bw - pad;
+    const maxY = window.innerHeight - bh - pad;
+    noBtn.style.left = (pad + Math.random()*Math.max(maxX-pad,10)) + 'px';
+    noBtn.style.top  = (pad + Math.random()*Math.max(maxY-pad,10)) + 'px';
+    noBtn.style.transform = 'scale('+scale+')';
+    if (dodges >= noTexts.length-1){
+      // give up gracefully — No becomes a second Yes
+      noBtn.classList.remove('no');
+      noBtn.classList.add('yes');
+      noBtn.onclick = accept;
+      noBtn.onpointerenter = null;
+      noBtn.ontouchstart = null;
+    }
+  }
+
+  // desktop: runs away on hover. mobile: jumps before the tap lands.
+  noBtn.addEventListener('pointerenter', e => { if(e.pointerType !== 'touch') dodge(); });
+  noBtn.addEventListener('touchstart', e => { e.preventDefault(); dodge(); }, {passive:false});
+  noBtn.addEventListener('click', e => { e.preventDefault(); dodge(); });
+
+  /* ---- confetti ---- */
+  const colors = ['#A85B2A','#C89B6D','#352318','#E8C9A0','#FFFDF8'];
+  function confetti(){
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    for(let i=0;i<60;i++){
+      const c = document.createElement('div');
+      c.className='confetti';
+      c.style.left = Math.random()*100+'vw';
+      c.style.background = colors[Math.floor(Math.random()*colors.length)];
+      c.style.animationDuration = (1.6+Math.random()*1.6)+'s';
+      c.style.animationDelay = (Math.random()*0.4)+'s';
+      c.style.borderRadius = Math.random()>0.5 ? '50%':'2px';
+      document.body.appendChild(c);
+      setTimeout(()=>c.remove(), 4000);
+    }
+  }
+
+  /* ---- page flow ---- */
+  function show(p){
+    [page1,page2,page3].forEach(x=>x.classList.remove('active'));
+    p.classList.add('active');
+  }
+
+  function accept(){
+    confetti();
+    noBtn.style.display='none';
+    setTimeout(()=>show(page2), 650);
+  }
+  yesBtn.addEventListener('click', accept);
+
+  /* ---- choice cards ---- */
+  const emoji = {Coffee:'☕', Drinks:'🍸', Sushi:'🍣', Ramen:'🍜'};
+  document.querySelectorAll('.card').forEach(card=>{
+    function choose(){
+      const pick = card.dataset.pick;
+      document.getElementById('finalPick').textContent = emoji[pick]+' '+pick;
+      const msg = encodeURIComponent("Hey Ashish, I said yes 😌 let's do "+pick.toLowerCase()+" "+emoji[pick]);
+      document.getElementById('waLink').href = "https://wa.me/"+PHONE+"?text="+msg;
+      confetti();
+      show(page3);
+    }
+    card.addEventListener('click', choose);
+    card.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();choose();} });
+  });
+})();
+</script>
+</body>
+</html>
