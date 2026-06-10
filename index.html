@@ -226,7 +226,22 @@
   const noBtn  = document.getElementById('noBtn');
 
   /* ---- runaway No button ---- */
-  const noTexts = ["No","You sure?","Think again","Seriously?","The barista is judging you","Okay now you're just playing","...","Yes it is then"];
+  const noTexts = [
+    "No",
+    "You sure?",
+    "Think again",
+    "Wrong button",
+    "Nice try",
+    "It's decaf, isn't it",
+    "Seriously?",
+    "The barista is judging you",
+    "This is getting awkward",
+    "I can do this all day",
+    "Okay now you're just flirting",
+    "My lawyer says yes",
+    "...",
+    "Fine. Yes it is"
+  ];
   let dodges = 0;
 
   function dodge(){
@@ -234,15 +249,24 @@
     // escalate the label
     noBtn.textContent = noTexts[Math.min(dodges, noTexts.length-1)];
     // shrink a little each time
-    const scale = Math.max(0.55, 1 - dodges*0.07);
+    const scale = Math.max(0.55, 1 - dodges*0.04);
     // break it out of the layout on first dodge
     noBtn.style.position = 'fixed';
-    const pad = 30;
+    const pad = 14;
     const bw = noBtn.offsetWidth, bh = noBtn.offsetHeight;
-    const maxX = window.innerWidth  - bw - pad;
-    const maxY = window.innerHeight - bh - pad;
-    noBtn.style.left = (pad + Math.random()*Math.max(maxX-pad,10)) + 'px';
-    noBtn.style.top  = (pad + Math.random()*Math.max(maxY-pad,10)) + 'px';
+    const W = window.innerWidth, H = window.innerHeight;
+    // stick to the empty edges — never land on the main content
+    const c = document.querySelector('.page.active').getBoundingClientRect();
+    const zones = [];
+    if (c.top - bh - pad*2 > 0)      zones.push({x0:pad, x1:W-bw-pad, y0:pad, y1:c.top-bh-pad});          // above
+    if (H - c.bottom - bh - pad*2 > 0) zones.push({x0:pad, x1:W-bw-pad, y0:c.bottom+pad, y1:H-bh-pad});   // below
+    if (c.left - bw - pad*2 > 0)     zones.push({x0:pad, x1:c.left-bw-pad, y0:pad, y1:H-bh-pad});         // left
+    if (W - c.right - bw - pad*2 > 0)  zones.push({x0:c.right+pad, x1:W-bw-pad, y0:pad, y1:H-bh-pad});    // right
+    // fallback if content fills the screen: hug top or bottom edge
+    if (!zones.length) zones.push({x0:pad, x1:W-bw-pad, y0:pad, y1:pad}, {x0:pad, x1:W-bw-pad, y0:H-bh-pad, y1:H-bh-pad});
+    const z = zones[Math.floor(Math.random()*zones.length)];
+    noBtn.style.left = (z.x0 + Math.random()*Math.max(z.x1-z.x0, 0)) + 'px';
+    noBtn.style.top  = (z.y0 + Math.random()*Math.max(z.y1-z.y0, 0)) + 'px';
     noBtn.style.transform = 'scale('+scale+')';
     if (dodges >= noTexts.length-1){
       // give up gracefully — No becomes a second Yes
