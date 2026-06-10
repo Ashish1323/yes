@@ -4,9 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>a small question ☕</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+
 <style>
   :root{
     --paper:#F6F0E4;
@@ -16,17 +18,31 @@
     --foam:#FFFDF8;
     --ink-soft:#6B5645;
   }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html,body{height:100%;}
+
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+  }
+
+  html,
+  body{
+    height:100%;
+  }
+
   body{
     font-family:'Karla',sans-serif;
     background:var(--paper);
     color:var(--espresso);
-    display:flex;align-items:center;justify-content:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     overflow:hidden;
-    background-image:radial-gradient(circle at 20% 15%, rgba(200,155,109,.12), transparent 45%),
-                     radial-gradient(circle at 85% 80%, rgba(168,91,42,.08), transparent 40%);
+    background-image:
+      radial-gradient(circle at 20% 15%, rgba(200,155,109,.12), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(168,91,42,.08), transparent 40%);
   }
+
   .page{
     display:none;
     text-align:center;
@@ -35,13 +51,31 @@
     width:100%;
     animation:fadeUp .6s ease both;
   }
-  .page.active{display:block;}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+
+  .page.active{
+    display:block;
+  }
+
+  @keyframes fadeUp{
+    from{
+      opacity:0;
+      transform:translateY(14px);
+    }
+    to{
+      opacity:1;
+      transform:none;
+    }
+  }
 
   .eyebrow{
-    font-size:11px;letter-spacing:.22em;text-transform:uppercase;
-    color:var(--caramel);font-weight:700;margin-bottom:18px;
+    font-size:11px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--caramel);
+    font-weight:700;
+    margin-bottom:18px;
   }
+
   h1{
     font-family:'Fraunces',serif;
     font-weight:600;
@@ -49,145 +83,406 @@
     line-height:1.12;
     margin-bottom:14px;
   }
-  h1 em{font-style:italic;font-weight:500;color:var(--caramel);}
-  .sub{color:var(--ink-soft);font-size:1rem;margin-bottom:34px;line-height:1.5;}
+
+  h1 em{
+    font-style:italic;
+    font-weight:500;
+    color:var(--caramel);
+  }
+
+  .sub{
+    color:var(--ink-soft);
+    font-size:1rem;
+    margin-bottom:34px;
+    line-height:1.5;
+  }
 
   /* ---- coffee cup ---- */
-  .cup{margin:0 auto 26px;width:74px;position:relative;}
+
+  .cup{
+    margin:0 auto 26px;
+    width:74px;
+    position:relative;
+  }
+
   .cup .mug{
-    width:64px;height:46px;background:var(--foam);
-    border:3px solid var(--espresso);border-radius:0 0 18px 18px;
-    position:relative;margin:0 auto;
+    width:64px;
+    height:46px;
+    background:var(--foam);
+    border:3px solid var(--espresso);
+    border-radius:0 0 18px 18px;
+    position:relative;
+    margin:0 auto;
   }
+
   .cup .mug::after{
-    content:'';position:absolute;right:-16px;top:6px;
-    width:16px;height:20px;border:3px solid var(--espresso);
-    border-left:none;border-radius:0 10px 10px 0;
+    content:'';
+    position:absolute;
+    right:-16px;
+    top:6px;
+    width:16px;
+    height:20px;
+    border:3px solid var(--espresso);
+    border-left:none;
+    border-radius:0 10px 10px 0;
   }
+
   .cup .mug::before{
-    content:'';position:absolute;left:5px;right:5px;top:5px;height:8px;
-    background:var(--crema);border-radius:6px;
+    content:'';
+    position:absolute;
+    left:5px;
+    right:5px;
+    top:5px;
+    height:8px;
+    background:var(--crema);
+    border-radius:6px;
   }
-  .steam{position:absolute;top:-22px;left:50%;transform:translateX(-50%);display:flex;gap:8px;}
+
+  .steam{
+    position:absolute;
+    top:-22px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:8px;
+  }
+
   .steam span{
-    width:3px;height:16px;background:var(--crema);border-radius:3px;opacity:.7;
+    width:3px;
+    height:16px;
+    background:var(--crema);
+    border-radius:3px;
+    opacity:.7;
     animation:steam 2.2s ease-in-out infinite;
   }
-  .steam span:nth-child(2){animation-delay:.4s;height:20px;}
-  .steam span:nth-child(3){animation-delay:.8s;}
+
+  .steam span:nth-child(2){
+    animation-delay:.4s;
+    height:20px;
+  }
+
+  .steam span:nth-child(3){
+    animation-delay:.8s;
+  }
+
   @keyframes steam{
-    0%,100%{transform:translateY(0) scaleY(1);opacity:.7;}
-    50%{transform:translateY(-6px) scaleY(1.15);opacity:.25;}
+    0%,100%{
+      transform:translateY(0) scaleY(1);
+      opacity:.7;
+    }
+    50%{
+      transform:translateY(-6px) scaleY(1.15);
+      opacity:.25;
+    }
   }
 
   /* ---- buttons ---- */
-  .btn-row{display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap;}
+
+  .btn-row{
+    display:flex;
+    gap:16px;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+
   button{
-    font-family:'Karla',sans-serif;font-weight:700;font-size:1.05rem;
-    padding:15px 38px;border-radius:999px;cursor:pointer;
+    font-family:'Karla',sans-serif;
+    font-weight:700;
+    font-size:1.05rem;
+    padding:15px 38px;
+    border-radius:999px;
+    cursor:pointer;
     border:3px solid var(--espresso);
     transition:transform .15s ease, box-shadow .15s ease;
     -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
   }
-  button:focus-visible{outline:3px dashed var(--caramel);outline-offset:3px;}
+
+  button:focus-visible{
+    outline:3px dashed var(--caramel);
+    outline-offset:3px;
+  }
+
   .yes{
-    background:var(--espresso);color:var(--foam);
+    background:var(--espresso);
+    color:var(--foam);
     box-shadow:0 6px 0 rgba(53,35,24,.25);
   }
-  .yes:hover{transform:scale(1.07) rotate(-1deg);}
-  .yes:active{transform:scale(.97);}
+
+  .yes:hover{
+    transform:scale(1.07) rotate(-1deg);
+  }
+
+  .yes:active{
+    transform:scale(.97);
+  }
+
   .no{
-    background:transparent;color:var(--espresso);
+    background:transparent;
+    color:var(--espresso);
+    white-space:nowrap;
+  }
+
+  .no.runaway{
+    position:fixed;
+    z-index:1000;
+    background:var(--foam);
+    box-shadow:0 6px 0 rgba(53,35,24,.18);
+    transform-origin:top left;
   }
 
   /* ---- choice cards ---- */
-  .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px;}
+
+  .cards{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-top:8px;
+  }
+
   .card{
-    background:var(--foam);border:3px solid var(--espresso);border-radius:18px;
-    padding:22px 12px 18px;cursor:pointer;
+    background:var(--foam);
+    border:3px solid var(--espresso);
+    border-radius:18px;
+    padding:22px 12px 18px;
+    cursor:pointer;
     transition:transform .15s ease, box-shadow .15s ease;
     font-family:'Karla',sans-serif;
   }
-  .card:hover{transform:translateY(-4px) rotate(-.5deg);box-shadow:0 8px 0 rgba(53,35,24,.18);}
-  .card:active{transform:scale(.97);}
-  .card .ico{font-size:2.1rem;display:block;margin-bottom:8px;}
-  .card .name{font-weight:700;font-size:1.05rem;display:block;}
+
+  .card:hover{
+    transform:translateY(-4px) rotate(-.5deg);
+    box-shadow:0 8px 0 rgba(53,35,24,.18);
+  }
+
+  .card:active{
+    transform:scale(.97);
+  }
+
+  .card .ico{
+    font-size:2.1rem;
+    display:block;
+    margin-bottom:8px;
+  }
+
+  .card .name{
+    font-weight:700;
+    font-size:1.05rem;
+    display:block;
+  }
+
   .card .note{
-    display:block;margin-top:5px;font-size:.78rem;color:var(--ink-soft);
-    font-family:'Fraunces',serif;font-style:italic;
+    display:block;
+    margin-top:5px;
+    font-size:.78rem;
+    color:var(--ink-soft);
+    font-family:'Fraunces',serif;
+    font-style:italic;
   }
 
   /* ---- day & time chips ---- */
-  .chip-group{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:14px 0 26px;}
-  .chip-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;}
+
+  .chip-group{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    margin:14px 0 26px;
+  }
+
+  .chip-label{
+    font-size:11px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    font-weight:700;
+  }
+
   .chip{
-    font-family:'Karla',sans-serif;font-weight:700;font-size:.92rem;
-    padding:10px 18px;border-radius:999px;cursor:pointer;
-    border:3px solid var(--espresso);background:var(--foam);color:var(--espresso);
+    font-family:'Karla',sans-serif;
+    font-weight:700;
+    font-size:.92rem;
+    padding:10px 18px;
+    border-radius:999px;
+    cursor:pointer;
+    border:3px solid var(--espresso);
+    background:var(--foam);
+    color:var(--espresso);
     transition:transform .12s ease, background .12s ease, color .12s ease;
   }
-  .chip small{display:block;font-weight:400;font-size:.68rem;color:var(--ink-soft);font-family:'Fraunces',serif;font-style:italic;margin-top:2px;}
-  .chip:hover{transform:translateY(-2px);}
-  .chip.selected{background:var(--espresso);color:var(--foam);}
-  .chip.selected small{color:var(--crema);}
+
+  .chip small{
+    display:block;
+    font-weight:400;
+    font-size:.68rem;
+    color:var(--ink-soft);
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    margin-top:2px;
+  }
+
+  .chip:hover{
+    transform:translateY(-2px);
+  }
+
+  .chip.selected{
+    background:var(--espresso);
+    color:var(--foam);
+  }
+
+  .chip.selected small{
+    color:var(--crema);
+  }
+
   .lock{
-    background:var(--caramel);color:var(--foam);
+    background:var(--caramel);
+    color:var(--foam);
     box-shadow:0 6px 0 rgba(53,35,24,.25);
   }
-  .lock:disabled{opacity:.4;cursor:not-allowed;box-shadow:none;}
-  .lock:not(:disabled):hover{transform:scale(1.05);}
+
+  .lock:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+    box-shadow:none;
+  }
+
+  .lock:not(:disabled):hover{
+    transform:scale(1.05);
+  }
 
   /* ---- final page ---- */
+
   .ticket{
-    background:var(--foam);border:3px solid var(--espresso);border-radius:20px;
-    padding:30px 24px;margin:0 auto 26px;max-width:380px;position:relative;
+    background:var(--foam);
+    border:3px solid var(--espresso);
+    border-radius:20px;
+    padding:30px 24px;
+    margin:0 auto 26px;
+    max-width:380px;
+    position:relative;
   }
-  .ticket::before,.ticket::after{
-    content:'';position:absolute;width:22px;height:22px;background:var(--paper);
-    border:3px solid var(--espresso);border-radius:50%;top:50%;transform:translateY(-50%);
+
+  .ticket::before,
+  .ticket::after{
+    content:'';
+    position:absolute;
+    width:22px;
+    height:22px;
+    background:var(--paper);
+    border:3px solid var(--espresso);
+    border-radius:50%;
+    top:50%;
+    transform:translateY(-50%);
   }
-  .ticket::before{left:-14px;border-left-color:transparent;}
-  .ticket::after{right:-14px;border-right-color:transparent;}
-  .ticket .label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;}
-  .ticket .pick{font-family:'Fraunces',serif;font-size:1.9rem;font-weight:600;margin:8px 0 4px;}
-  .ticket .fine{font-size:.8rem;color:var(--ink-soft);font-style:italic;}
+
+  .ticket::before{
+    left:-14px;
+    border-left-color:transparent;
+  }
+
+  .ticket::after{
+    right:-14px;
+    border-right-color:transparent;
+  }
+
+  .ticket .label{
+    font-size:10px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    font-weight:700;
+  }
+
+  .ticket .pick{
+    font-family:'Fraunces',serif;
+    font-size:1.9rem;
+    font-weight:600;
+    margin:8px 0 4px;
+  }
+
+  .ticket .fine{
+    font-size:.8rem;
+    color:var(--ink-soft);
+    font-style:italic;
+  }
+
   .wa{
-    display:inline-flex;align-items:center;gap:10px;text-decoration:none;
-    background:var(--caramel);color:var(--foam);font-weight:700;font-size:1.05rem;
-    padding:15px 32px;border-radius:999px;border:3px solid var(--espresso);
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    background:var(--caramel);
+    color:var(--foam);
+    font-weight:700;
+    font-size:1.05rem;
+    padding:15px 32px;
+    border-radius:999px;
+    border:3px solid var(--espresso);
     box-shadow:0 6px 0 rgba(53,35,24,.25);
     transition:transform .15s ease;
   }
-  .wa:hover{transform:scale(1.05);}
 
-  /* confetti */
+  .wa:hover{
+    transform:scale(1.05);
+  }
+
+  /* ---- confetti ---- */
+
   .confetti{
-    position:fixed;width:9px;height:14px;top:-20px;pointer-events:none;z-index:99;
+    position:fixed;
+    width:9px;
+    height:14px;
+    top:-20px;
+    pointer-events:none;
+    z-index:99;
     animation:fall linear forwards;
   }
+
   @keyframes fall{
-    to{transform:translateY(110vh) rotate(720deg);opacity:.9;}
+    to{
+      transform:translateY(110vh) rotate(720deg);
+      opacity:.9;
+    }
   }
 
   @media (prefers-reduced-motion:reduce){
-    *{animation:none !important;transition:none !important;}
+    *{
+      animation:none !important;
+      transition:none !important;
+    }
   }
+
   @media (max-width:380px){
-    button{padding:13px 28px;font-size:1rem;}
+    button{
+      padding:13px 28px;
+      font-size:1rem;
+    }
   }
 </style>
 </head>
+
 <body>
 
 <!-- PAGE 1 — the question -->
 <section class="page active" id="page1">
   <div class="cup">
-    <div class="steam"><span></span><span></span><span></span></div>
+    <div class="steam">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
     <div class="mug"></div>
   </div>
+
   <div class="eyebrow">single origin · limited edition · one (1) ashish</div>
+
   <h1>Will you go on a <em>date</em> with Ashish?</h1>
-  <p class="sub">Tasting notes: good banter, questionable confidence, knows too much about coffee.</p>
+
+  <p class="sub">
+    Tasting notes: good banter, questionable confidence, knows too much about coffee.
+  </p>
+
   <div class="btn-row">
     <button class="yes" id="yesBtn">Yes ☕</button>
     <button class="no" id="noBtn">No</button>
@@ -197,24 +492,30 @@
 <!-- PAGE 2 — pick the vibe -->
 <section class="page" id="page2">
   <div class="eyebrow">excellent decision · now curating</div>
+
   <h1>Pick the <em>vibe</em></h1>
+
   <p class="sub">No wrong answers. Some answers are more right.</p>
+
   <div class="cards">
     <div class="card" data-pick="Coffee" tabindex="0" role="button">
       <span class="ico">☕</span>
       <span class="name">Coffee</span>
       <span class="note">he will talk about V60s. be warned.</span>
     </div>
+
     <div class="card" data-pick="Drinks" tabindex="0" role="button">
       <span class="ico">🍸</span>
       <span class="name">Drinks</span>
       <span class="note">liquid courage, optional</span>
     </div>
+
     <div class="card" data-pick="Sushi" tabindex="0" role="button">
       <span class="ico">🍣</span>
       <span class="name">Sushi</span>
       <span class="note">raw honesty included</span>
     </div>
+
     <div class="card" data-pick="Ramen" tabindex="0" role="button">
       <span class="ico">🍜</span>
       <span class="name">Ramen</span>
@@ -226,7 +527,9 @@
 <!-- PAGE 2.5 — when works? -->
 <section class="page" id="pageWhen">
   <div class="eyebrow">now brewing · final details</div>
+
   <h1>When are you <em>free?</em></h1>
+
   <p class="sub">Pick a day this week, and your hour of choice.</p>
 
   <span class="chip-label">Day</span>
@@ -234,9 +537,20 @@
 
   <span class="chip-label">Time</span>
   <div class="chip-group" id="timeChips">
-    <button class="chip" data-time="Afternoon">☀️ Afternoon<small>daylight. very respectable.</small></button>
-    <button class="chip" data-time="Evening">🌆 Evening<small>golden hour, golden choice</small></button>
-    <button class="chip" data-time="Night">🌙 Night<small>bold. respect.</small></button>
+    <button class="chip" data-time="Afternoon">
+      ☀️ Afternoon
+      <small>daylight. very respectable.</small>
+    </button>
+
+    <button class="chip" data-time="Evening">
+      🌆 Evening
+      <small>golden hour, golden choice</small>
+    </button>
+
+    <button class="chip" data-time="Night">
+      🌙 Night
+      <small>bold. respect.</small>
+    </button>
   </div>
 
   <button class="lock" id="lockBtn" disabled>Lock it in 🔒</button>
@@ -245,27 +559,41 @@
 <!-- PAGE 3 — it's a date -->
 <section class="page" id="page3">
   <div class="eyebrow">order confirmed</div>
+
   <h1>It's a <em>date.</em></h1>
+
   <div class="ticket">
     <span class="label">Your pick</span>
     <div class="pick" id="finalPick">☕ Coffee</div>
-    <div class="when" id="finalWhen" style="font-family:'Karla',sans-serif;font-weight:700;font-size:1rem;margin-bottom:6px;"></div>
+    <div
+      class="when"
+      id="finalWhen"
+      style="font-family:'Karla',sans-serif;font-weight:700;font-size:1rem;margin-bottom:6px;"
+    ></div>
     <span class="fine">redeemable for one good evening · non-refundable</span>
   </div>
+
   <p class="sub">One last step — make it official:</p>
-  <a class="wa" id="waLink" href="#" target="_blank" rel="noopener">Tell Ashish 💬</a>
+
+  <a class="wa" id="waLink" href="#" target="_blank" rel="noopener">
+    Tell Ashish 💬
+  </a>
 </section>
 
 <script>
 (function(){
   const PHONE = "919427036284";
+
   const page1 = document.getElementById('page1');
   const page2 = document.getElementById('page2');
+  const pageWhen = document.getElementById('pageWhen');
   const page3 = document.getElementById('page3');
+
   const yesBtn = document.getElementById('yesBtn');
-  const noBtn  = document.getElementById('noBtn');
+  const noBtn = document.getElementById('noBtn');
 
   /* ---- runaway No button ---- */
+
   const noTexts = [
     "No",
     "You sure?",
@@ -280,146 +608,339 @@
     "Okay now you're just flirting",
     "My lawyer says yes",
     "...",
-    "Fine. Yes it is"
+    "Fine. Yes it is ☕"
   ];
+
   let dodges = 0;
+  let noSurrendered = false;
+  let lastDodgeAt = 0;
+
+  function getViewport(){
+    const vv = window.visualViewport;
+
+    return {
+      left: vv ? vv.offsetLeft : 0,
+      top: vv ? vv.offsetTop : 0,
+      width: vv ? vv.width : window.innerWidth,
+      height: vv ? vv.height : window.innerHeight
+    };
+  }
+
+  function rand(min, max){
+    return min + Math.random() * Math.max(max - min, 0);
+  }
 
   function dodge(){
+    if (noSurrendered) return;
+
+    lastDodgeAt = Date.now();
     dodges++;
-    // escalate the label
-    noBtn.textContent = noTexts[Math.min(dodges, noTexts.length-1)];
-    // shrink a little each time
-    const scale = Math.max(0.55, 1 - dodges*0.04);
-    // break it out of the layout on first dodge
-    noBtn.style.position = 'fixed';
-    const pad = 14;
-    const bw = noBtn.offsetWidth, bh = noBtn.offsetHeight;
-    const W = (window.visualViewport ? window.visualViewport.width : window.innerWidth);
-    const H = (window.visualViewport ? window.visualViewport.height : window.innerHeight);
-    // stick to the empty edges — never land on the main content
-    const c = document.querySelector('.page.active').getBoundingClientRect();
+
+    noBtn.textContent = noTexts[Math.min(dodges, noTexts.length - 1)];
+    noBtn.classList.add('runaway');
+
+    const scale = Math.max(0.68, 1 - dodges * 0.025);
+
+    noBtn.style.transform = 'none';
+    noBtn.style.left = '0px';
+    noBtn.style.top = '0px';
+
+    const vp = getViewport();
+    const pad = 16;
+
+    const bw = noBtn.offsetWidth * scale;
+    const bh = noBtn.offsetHeight * scale;
+
+    const pageRect = page1.getBoundingClientRect();
+
+    const protectedRect = {
+      left: Math.max(vp.left, pageRect.left - 24),
+      right: Math.min(vp.left + vp.width, pageRect.right + 24),
+      top: Math.max(vp.top, pageRect.top - 36),
+      bottom: Math.min(vp.top + vp.height, pageRect.bottom + 36)
+    };
+
     const zones = [];
-    if (c.top - bh - pad*2 > 0)      zones.push({x0:pad, x1:W-bw-pad, y0:pad, y1:c.top-bh-pad});          // above
-    if (H - c.bottom - bh - pad*2 > 0) zones.push({x0:pad, x1:W-bw-pad, y0:c.bottom+pad, y1:H-bh-pad});   // below
-    if (c.left - bw - pad*2 > 0)     zones.push({x0:pad, x1:c.left-bw-pad, y0:pad, y1:H-bh-pad});         // left
-    if (W - c.right - bw - pad*2 > 0)  zones.push({x0:c.right+pad, x1:W-bw-pad, y0:pad, y1:H-bh-pad});    // right
-    // fallback if content fills the screen: hug top or bottom edge
-    if (!zones.length) zones.push({x0:pad, x1:W-bw-pad, y0:pad, y1:pad}, {x0:pad, x1:W-bw-pad, y0:H-bh-pad, y1:H-bh-pad});
-    const z = zones[Math.floor(Math.random()*zones.length)];
-    let x = z.x0 + Math.random()*Math.max(z.x1-z.x0, 0);
-    let y = z.y0 + Math.random()*Math.max(z.y1-z.y0, 0);
-    // hard safety net: if the spot still overlaps the content, snap to the bigger free gap
-    if (x < c.right && x+bw > c.left && y < c.bottom && y+bh > c.top){
-      y = (c.top > H - c.bottom)
-        ? Math.max(pad, c.top - bh - pad)      // gap above is bigger
-        : Math.min(H - bh - pad, c.bottom + pad); // gap below is bigger
+
+    /*
+      Prefer putting the playful text below the main content.
+      This avoids the ugly issue where "You sure?" floats over the headline/cup.
+    */
+    const belowTop = protectedRect.bottom + pad;
+    const belowBottom = vp.top + vp.height - bh - pad;
+
+    if (belowBottom > belowTop) {
+      zones.push({
+        x0: vp.left + pad,
+        x1: vp.left + vp.width - bw - pad,
+        y0: belowTop,
+        y1: belowBottom
+      });
     }
+
+    /*
+      Fallback: put it above the content only if there is enough clean space.
+    */
+    const aboveTop = vp.top + pad;
+    const aboveBottom = protectedRect.top - bh - pad;
+
+    if (aboveBottom > aboveTop) {
+      zones.push({
+        x0: vp.left + pad,
+        x1: vp.left + vp.width - bw - pad,
+        y0: aboveTop,
+        y1: aboveBottom
+      });
+    }
+
+    /*
+      Last fallback: keep it visible near the bottom.
+      Not glamorous, but neither is debugging iPhone viewport behavior.
+    */
+    if (!zones.length) {
+      zones.push({
+        x0: vp.left + pad,
+        x1: vp.left + vp.width - bw - pad,
+        y0: vp.top + vp.height - bh - pad,
+        y1: vp.top + vp.height - bh - pad
+      });
+    }
+
+    const z = zones[0];
+
+    const x = rand(z.x0, z.x1);
+    const y = rand(z.y0, z.y1);
+
     noBtn.style.left = x + 'px';
-    noBtn.style.top  = y + 'px';
-    noBtn.style.transform = 'scale('+scale+')';
-    if (dodges >= noTexts.length-1){
-      // give up gracefully — No becomes a second Yes
+    noBtn.style.top = y + 'px';
+    noBtn.style.transform = 'scale(' + scale + ')';
+
+    if (dodges >= noTexts.length - 1) {
+      noSurrendered = true;
       noBtn.classList.remove('no');
       noBtn.classList.add('yes');
-      noBtn.onclick = accept;
-      noBtn.onpointerenter = null;
-      noBtn.ontouchstart = null;
+      noBtn.textContent = "Fine. Yes it is ☕";
     }
   }
 
-  // desktop: runs away on hover. mobile: jumps before the tap lands.
-  noBtn.addEventListener('pointerenter', e => { if(e.pointerType !== 'touch') dodge(); });
-  noBtn.addEventListener('touchstart', e => { e.preventDefault(); dodge(); }, {passive:false});
-  noBtn.addEventListener('click', e => { e.preventDefault(); dodge(); });
+  function handleNoAttempt(e){
+    e.preventDefault();
+
+    if (noSurrendered) {
+      accept();
+      return;
+    }
+
+    dodge();
+  }
+
+  noBtn.addEventListener('pointerenter', function(e){
+    if (e.pointerType !== 'touch' && !noSurrendered) {
+      dodge();
+    }
+  });
+
+  noBtn.addEventListener('pointerdown', handleNoAttempt, { passive:false });
+
+  noBtn.addEventListener('click', function(e){
+    e.preventDefault();
+
+    /*
+      Prevent mobile browsers from firing pointerdown and click together,
+      which was causing the button to hide before the playful text could be seen.
+    */
+    if (Date.now() - lastDodgeAt < 350) {
+      return;
+    }
+
+    if (noSurrendered) {
+      accept();
+      return;
+    }
+
+    dodge();
+  });
 
   /* ---- confetti ---- */
+
   const colors = ['#A85B2A','#C89B6D','#352318','#E8C9A0','#FFFDF8'];
+
   function confetti(){
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    for(let i=0;i<60;i++){
+
+    for(let i = 0; i < 60; i++){
       const c = document.createElement('div');
-      c.className='confetti';
-      c.style.left = Math.random()*100+'vw';
-      c.style.background = colors[Math.floor(Math.random()*colors.length)];
-      c.style.animationDuration = (1.6+Math.random()*1.6)+'s';
-      c.style.animationDelay = (Math.random()*0.4)+'s';
-      c.style.borderRadius = Math.random()>0.5 ? '50%':'2px';
+
+      c.className = 'confetti';
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.animationDuration = 1.6 + Math.random() * 1.6 + 's';
+      c.style.animationDelay = Math.random() * 0.4 + 's';
+      c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+
       document.body.appendChild(c);
-      setTimeout(()=>c.remove(), 4000);
+
+      setTimeout(function(){
+        c.remove();
+      }, 4000);
     }
   }
 
   /* ---- page flow ---- */
-  const pageWhen = document.getElementById('pageWhen');
+
   function show(p){
-    [page1,page2,pageWhen,page3].forEach(x=>x.classList.remove('active'));
+    [page1, page2, pageWhen, page3].forEach(function(page){
+      page.classList.remove('active');
+    });
+
     p.classList.add('active');
   }
 
   function accept(){
     confetti();
-    noBtn.style.display='none';
-    setTimeout(()=>show(page2), 650);
+    noBtn.style.display = 'none';
+
+    setTimeout(function(){
+      show(page2);
+    }, 650);
   }
+
   yesBtn.addEventListener('click', accept);
 
   /* ---- choice cards → scheduling ---- */
-  const emoji = {Coffee:'☕', Drinks:'🍸', Sushi:'🍣', Ramen:'🍜'};
-  let chosen = {pick:null, day:null, time:null};
 
-  document.querySelectorAll('.card').forEach(card=>{
+  const emoji = {
+    Coffee:'☕',
+    Drinks:'🍸',
+    Sushi:'🍣',
+    Ramen:'🍜'
+  };
+
+  let chosen = {
+    pick:null,
+    day:null,
+    time:null
+  };
+
+  document.querySelectorAll('.card').forEach(function(card){
     function choose(){
       chosen.pick = card.dataset.pick;
       show(pageWhen);
     }
+
     card.addEventListener('click', choose);
-    card.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();choose();} });
+
+    card.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        choose();
+      }
+    });
   });
 
   /* ---- build day chips: next 6 days ---- */
+
   const dayChips = document.getElementById('dayChips');
-  const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const monNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  for(let i=1;i<=6;i++){
+
+  const dayNames = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+  ];
+
+  const monNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ];
+
+  for(let i = 1; i <= 6; i++){
     const d = new Date();
-    d.setDate(d.getDate()+i);
-    const label = (i===1 ? 'Tomorrow' : dayNames[d.getDay()]);
+    d.setDate(d.getDate() + i);
+
+    const label = i === 1 ? 'Tomorrow' : dayNames[d.getDay()];
+
     const btn = document.createElement('button');
-    btn.className='chip';
+    btn.className = 'chip';
     btn.dataset.day = dayNames[d.getDay()] + ', ' + monNames[d.getMonth()] + ' ' + d.getDate();
     btn.innerHTML = label + '<small>' + monNames[d.getMonth()] + ' ' + d.getDate() + '</small>';
+
     dayChips.appendChild(btn);
   }
 
   /* ---- chip selection ---- */
+
   const lockBtn = document.getElementById('lockBtn');
+
   function wireChips(container, key){
-    container.addEventListener('click', e=>{
+    container.addEventListener('click', function(e){
       const chip = e.target.closest('.chip');
+
       if(!chip) return;
-      container.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
+
+      container.querySelectorAll('.chip').forEach(function(c){
+        c.classList.remove('selected');
+      });
+
       chip.classList.add('selected');
       chosen[key] = chip.dataset[key];
+
       lockBtn.disabled = !(chosen.day && chosen.time);
     });
   }
+
   wireChips(dayChips, 'day');
   wireChips(document.getElementById('timeChips'), 'time');
 
   /* ---- lock it in ---- */
-  const timeEmoji = {Afternoon:'☀️', Evening:'🌆', Night:'🌙'};
-  lockBtn.addEventListener('click', ()=>{
-    document.getElementById('finalPick').textContent = emoji[chosen.pick]+' '+chosen.pick;
-    document.getElementById('finalWhen').textContent = chosen.day+' · '+chosen.time+' '+timeEmoji[chosen.time];
+
+  const timeEmoji = {
+    Afternoon:'☀️',
+    Evening:'🌆',
+    Night:'🌙'
+  };
+
+  lockBtn.addEventListener('click', function(){
+    document.getElementById('finalPick').textContent =
+      emoji[chosen.pick] + ' ' + chosen.pick;
+
+    document.getElementById('finalWhen').textContent =
+      chosen.day + ' · ' + chosen.time + ' ' + timeEmoji[chosen.time];
+
     const msg = encodeURIComponent(
-      "Hey Ashish, I said yes 😌 let's do "+chosen.pick.toLowerCase()+" "+emoji[chosen.pick]+
-      " — "+chosen.day+", "+chosen.time.toLowerCase()+" "+timeEmoji[chosen.time]
+      "Hey Ashish, I said yes 😌 let's do " +
+      chosen.pick.toLowerCase() +
+      " " +
+      emoji[chosen.pick] +
+      " — " +
+      chosen.day +
+      ", " +
+      chosen.time.toLowerCase() +
+      " " +
+      timeEmoji[chosen.time]
     );
-    document.getElementById('waLink').href = "https://wa.me/"+PHONE+"?text="+msg;
+
+    document.getElementById('waLink').href =
+      "https://wa.me/" + PHONE + "?text=" + msg;
+
     confetti();
     show(page3);
   });
 })();
 </script>
+
 </body>
 </html>
